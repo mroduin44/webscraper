@@ -11,11 +11,13 @@ commands = {
     "map":"maps a website to use for the searches EX. map http://www.bing.com",
     "searchpage":"searches for any mapped pages containing the specified string or pattern in its code EX. searchpage microsoft",
     "search":"searches for any specified strings or patterns. Designed to use regular expression EX. search [a-z0-9\\.\\-+_]+@[a-z0-9\\.\\-+_]+\\.[a-z]+",
-    "output":"outputs the latest results from a search or page search. text file name can be specified as string after output command but also defults to output if not defined EX. output EX. output hello.txt",
+    "outputresults":"outputs the latest results from a search or page search. text file name can be specified as string after output command but also defults to output if not defined EX. output EX. output hello.txt",
+    "outputmap":"outputs the mapped website in its entirity",
 }
 ##Required for threading
 def console():
-    urls=[]
+    urls = []
+    results = None
     while True:
         check = input("What would you like to do?: ")
         test = check.split()
@@ -39,7 +41,7 @@ def console():
             deletecommand(check)
             
         elif test[0] == "map":
-            urls = map(check)
+            urls = mapwebsite(check)
             
         elif test[0] == "searchpage" or test[0] == "searchpages":
             results = searchpage(check,urls)
@@ -63,8 +65,18 @@ def console():
             else:
                 print("No Results")
         
-        elif test[0] == "output":
-            output(check,results)
+        elif test[0] == "outputresults":
+            if not results is None:
+                output(check,results)
+            else:
+                print("Error: results is not defined")
+
+        elif test[0] == "outputmap":
+            if not urls == []:
+                output(check,urls)
+            else:
+                print("Error: List contains no urls")
+            
 
         print()
 
@@ -86,7 +98,7 @@ def deletecommand(check):
     test = check.split()
     del quicksearch[test[1]]
 
-def map(check):
+def mapwebsite(check):
     ##Get all the urls in a website
     test = check.split()
     if not "http://" in test[1]:
@@ -116,9 +128,12 @@ def search(check,urls):
 def output(check,results):
     test=check.split(" ",1)
     if len(test)>1:
-        text_file = open(test[1]+".txt", "w")
+        if ".txt" in test:
+            text_file = open("output/"+test[1],"w")
+        else:
+            text_file = open("output/"+test[1]+".txt","w")
     else:
-        text_file = open("Output.txt", "w")
-        for i in results:
-            text_file.write(i+",")
+        text_file = open("output/output.txt","w")
+    for i in results:
+        text_file.write(i+"\n")
     text_file.close()
