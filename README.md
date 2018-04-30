@@ -1,7 +1,9 @@
-# webscraper
+# Webscraper
 A web scraper and search tool
 
 This program is a work in progress tool for web developers capable of mapping websites through their accessible links and searching the webpages mapped for strings and string patterns for testing purposes. This program was initially designed to be able to find all emails that appear on a website. Similarly, the program is also designed to find any pages containing specified errors defined by a string or string pattern
+
+##Note all search commands are based off of Python Regular Expression
 
 Current commands:
   1. quit : Quits program and saves search command set as is EX. quit
